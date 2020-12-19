@@ -16,7 +16,7 @@ namespace Вектора
         {
             InitializeComponent();
         }
-        Single _Ax, _Ay, _Bx, _By, _Cx, _Cy, _lengthA, _lengthB, _lengthC, _korAx, _korBx, _korAy, _korBy, _korCx, _korCy, _Cx1, _Cy1;
+        Single _Ax, _Ay, _Bx, _By, _Cx, _Cy, _lengthA, _lengthB, _lengthC, _korAx, _korBx, _korAy, _korBy, _korCx, _korCy;
         public void Drow()
         {
             Graphics bmp = pictureBox1.CreateGraphics();
@@ -34,25 +34,31 @@ namespace Вектора
             if (radioButton2.Checked)
             {
                 Pen penC = new Pen(Color.Green);
-                bmp.DrawLine(penC, _Cx, _Cy, _Cx1, _Cy1);
+                bmp.DrawLine(penC, _korAx, _korAy, _korBx, _korBy);
             }
         }
 
         public void Calc()
         {
-            _korAx = 190 + 4 * _Ax;
-            _korAy = 200 - 4 * _Ay;
-            _korBx = 190 + 4 * _Bx;
-            _korBy = 200 - 4 * _By;
-            _korCy = 200 - 4 * _Cy;
-            _korCx = 190 + 4 * _Cx;//выражения, чтобы вектора выходили из центра координат
+            _korAx = 190 +  _Ax;
+            _korAy = 200 -  _Ay;
+            _korBx = 190 +  _Bx;
+            _korBy = 200 -  _By;
+            if (radioButton1.Checked)
+            {
+                _korCy = 200 -  _Cy;
+                _korCx = 190 +  _Cx;
+            }
+            if (radioButton2.Checked)
+            {
+            }
             _Ax = Convert.ToSingle(numericUpDown1.Value);
             _Ay = Convert.ToSingle(numericUpDown2.Value);
             _Bx = Convert.ToSingle(numericUpDown3.Value);
-            _By = Convert.ToSingle(numericUpDown4.Value);//забираем координаты векторов из нумериков
+            _By = Convert.ToSingle(numericUpDown4.Value);
             _lengthA = (Single)Math.Sqrt((_Ax * _Ax) + (_Ay * _Ay));
             _lengthB = (Single)Math.Sqrt((_Bx * _Bx) + (_By * _By));
-            _lengthC = (Single)Math.Sqrt((_Cx * _Cx) + (_Cy * _Cy));//считает длины векторов
+            _lengthC = (Single)Math.Sqrt((_Cx * _Cx) + (_Cy * _Cy));
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -65,18 +71,17 @@ namespace Вектора
             }
             if (radioButton2.Checked)
             {
-                _Cx = _Ax;
-                _Cy = _Ay;
-                _Cx1 = _Bx;
-                _Cy1 = _By;
-            }//в зависимости от радиобутона слаживает или отнимает вектора
+                _Cx = _Ax - _Bx;
+                _Cy = _Ay - _By;
+            }
             textBox1.Text = Convert.ToString(_lengthA);
             textBox2.Text = Convert.ToString(_lengthB);
             textBox3.Text = Convert.ToString(_Cx);
             textBox4.Text = Convert.ToString(_Cy);
-            textBox5.Text = Convert.ToString(_lengthC);//пишет в текстбоксы значения длинн и координат нового вектора
-
-            Drow();//подрубает график
+            textBox5.Text = Convert.ToString(_lengthC);
+            Graphics bmp = pictureBox1.CreateGraphics();
+            bmp.Clear(SystemColors.Control);
+            Drow();
 
         }
     }
